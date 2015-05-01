@@ -117,7 +117,7 @@ int main(void)
 								bool flag=true;
 								for(int d=first;d<second;++d){
 									//判断当前的节点在矩形区域内
-									if(rects[d].l<=curx&&rects[d].r>=curx&&rects[d].t<=cury&&rects[d].b>=cury)
+									if(rects[d].t<=curx&&rects[d].b>=curx&&rects[d].l<=cury&&rects[d].r>=cury)
 									{
 										//节点在矩形区域内
 										flag=false;
@@ -195,7 +195,7 @@ int main(void)
 				 int s=path.size();
 				 int i,j;
 				 for(i=s-1,j=1;i>=0;i--,j++)
-					 cout<<"Time step "<<j<<": The robber has been at "<<path[i].x<<","<<path[i].y<<endl;
+					 cout<<"Time step "<<j<<": The robber has been at "<<path[i].y<<","<<path[i].x<<endl;
 			 }
 		  }
 
