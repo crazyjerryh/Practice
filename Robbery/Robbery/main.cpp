@@ -75,9 +75,6 @@ int main(void)
 				   points.push_back(point(i,j));   //i 代表的长度，j代表的是宽度
 			}
 
-			int ss=points.size();
-			for(int i=0;i<ss;i++)
-				cout<<points[i].x<<" "<<points[i].y<<"     ";
 
 			cout<<"Robbery #"<<++tcase<<":"<<endl;
 
@@ -101,7 +98,6 @@ int main(void)
 				}
 				
 				num=second;  //设置num为second
-				cout<<"first"<<first<<"second"<<second<<endl;
 
 				std::vector<point> tpoints;
 				for(int j=0;j<size;j++){
@@ -134,11 +130,6 @@ int main(void)
 					}
 				}
 
-				cout<<"tpoints";
-				int ss=tpoints.size();
-				for(int p=0;p<ss;++p)
-					cout<<tpoints[p].x<<" "<<tpoints[p].y<<"/// ";
-				cout<<endl;
 				//交换
 				points.swap(tpoints);
 				paths.push_back(points);
@@ -166,7 +157,6 @@ int main(void)
 					 int y=cury+dir[i][1];
 					 int tsize=tpoints.size();
 					 if(x>0&&y>0&&x<=h&&y<=w){
-						 cout<<x<<" "<<y<<endl;
 					     for(int j=0;j<tsize;j++)
 							 if(x==tpoints[j].x&&y==tpoints[j].y)
 							 {
