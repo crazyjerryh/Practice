@@ -1,9 +1,0 @@
-*.sln
-debug
-*.sdf
-*.suo
-ipch
-*.vcxproj
-*.vcroj.filters
-*.vcxproj.user
-
