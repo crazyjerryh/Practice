@@ -1,8 +1,8 @@
 *.sln
 debug
+ipch
 *.sdf
 *.suo
-ipch
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
