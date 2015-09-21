@@ -41,9 +41,8 @@ bool dfs1(int u){
 	 for(int i=head[u];i!=-1;i=edges[i].next) ++num;
 	 for(int i=0;i<num;i++){
 		 int now=-1;
-		 for(int i=head[u];i!=-1;i=edges[i].next){
-		      int v=edges[i].v;
-			  
+		 for(int j=head[u];j!=-1;j=edges[j].next){
+		      int v=edges[j].v; 
 			  if(!vis[v]&&mat[v][ans[cur]]){
 				  cur++;
 				  now=v;
@@ -51,17 +50,16 @@ bool dfs1(int u){
 			  }
 			  if(vis[v]&&mat[v][ans[cur]]) return false;
 		 }
-		 cout<<now<<endl;
-		 if(now!=-1){
-		     for(int i=head[u];i=-1;i=edges[i].next){
-				 int v=edges[i].v;
+
+		 if(now==-1){
+		     for(int j=head[u];j!=-1;j=edges[j].next){
+				 int v=edges[j].v;
 				 if(!vis[v]){
 				      now=v;
 					  break;
 				 }
 			 }
 		 }
-		 
 		 if(!dfs1(now)) return false;
 		 vis[now]=1;
 	 }
@@ -69,6 +67,10 @@ bool dfs1(int u){
 }
 
 void solve(){
+	if(m==1){
+		printf("YES\n");
+		return;
+	}
 	memset(mat,0,sizeof(mat));
 	for(int i=1;i<=n;i++)
 		dfs(i,i);
@@ -76,12 +78,12 @@ void solve(){
     memset(vis,0,sizeof(vis));	
 	cur=0;
 	bool res=dfs1(1);
-	if(res) printf("YES\n");
+	if(res&&cur>=m) printf("YES\n");
 	else printf("NO\n");
 }
 
 int main(void){
-	freopen("debug.txt","r",stdin);
+	//freopen("debug.txt","r",stdin);
 	scanf("%d",&tcase);
 	while(tcase--){
 		scanf("%d",&n);
