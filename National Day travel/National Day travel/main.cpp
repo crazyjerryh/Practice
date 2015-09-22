@@ -1,85 +1,58 @@
-/*!
- * file main.cpp
- * author Rotile_H
- * date 2015/09/21
- * 
- */
+/*
+* author Rotile_H
+* file E:\POJ\Practice\National Day travel\National Day travel\main.cpp
+* 2015 9 22
+*/
 #include <stdio.h>
-#include <iostream>
-#include <string.h>
-#include <string>
-#include <algorithm>
 #include <memory.h>
+#include <vector>
+#include <iostream>
+#include <bitset>
+#include <algorithm>
+#include <string.h>
 
 using namespace std;
 #define inf 0x3f3f3f3f
 #define maxn 200
 
-struct edge{
-	int v,next;
-}edges[maxn<<1];
-int head[maxn];
-int n,m,cnt,tcase;
-int cur;
-int mat[maxn][maxn];
+vector<int> mat[maxn];
+bitset<maxn> can[maxn];
 int vis[maxn],ans[maxn];
+int tcase,n,m,cur;
+bool res;
 
-void addedged(int u,int v){
-	edges[cnt].v=v,edges[cnt].next=head[u],head[u]=cnt++;
-}
-
-void dfs(int tnt,int u){
-	mat[tnt][u]=1;
-	for(int i=head[u];i!=-1;i=edges[i].next){
-		int v=edges[i].v;
-		dfs(tnt,v);
-	}
-}
-
-bool dfs1(int u){
-     int num=0;
-	 for(int i=head[u];i!=-1;i=edges[i].next) ++num;
-	 for(int i=0;i<num;i++){
-		 int now=-1;
-		 for(int j=head[u];j!=-1;j=edges[j].next){
-		      int v=edges[j].v; 
-			  if(!vis[v]&&mat[v][ans[cur]]){
-				  cur++;
-				  now=v;
-				  break;
-			  }
-			  if(vis[v]&&mat[v][ans[cur]]) return false;
+void dfs(int u,int fa){
+	 can[u][u]=1;
+     for(int i=0;i<mat[u].size();i++){
+		 int v=mat[u][i];
+		 if(v!=fa){
+		      dfs(v,u);
+			  can[u]|=can[v];
 		 }
-
-		 if(now==-1){
-		     for(int j=head[u];j!=-1;j=edges[j].next){
-				 int v=edges[j].v;
-				 if(!vis[v]){
-				      now=v;
-					  break;
-				 }
-			 }
-		 }
-		 if(!dfs1(now)) return false;
-		 vis[now]=1;
 	 }
-	 return true;
 }
 
-void solve(){
-	if(m==1){
-		printf("YES\n");
+void dfs1(int u,int fa){
+	if(u==ans[cur]) cur++;
+	if(cur==m) {
+		res=true;
 		return;
 	}
-	memset(mat,0,sizeof(mat));
-	for(int i=1;i<=n;i++)
-		dfs(i,i);
-
-    memset(vis,0,sizeof(vis));	
-	cur=0;
-	bool res=dfs1(1);
-	if(res&&cur>=m) printf("YES\n");
-	else printf("NO\n");
+	while(true){
+		int flag=1;
+		for(int i=0;i<mat[u].size();i++){
+			if(mat[u][i]==fa)  continue;
+		    int v=mat[u][i];
+			if(!vis[v]&&can[v][ans[cur]]){
+				vis[v]=1;
+				dfs1(v,u);
+				flag=0;
+				break;
+			}
+		}
+		if(flag)  break;
+	}
+	return;
 }
 
 int main(void){
@@ -87,17 +60,23 @@ int main(void){
 	scanf("%d",&tcase);
 	while(tcase--){
 		scanf("%d",&n);
-		cnt=0;
-		memset(head,-1,sizeof(head));
+		for(int i=0;i<maxn;i++)  mat[i].clear();
 		for(int i=1;i<n;i++){
 			int u,v;
 			scanf("%d%d",&u,&v);
-			addedged(u,v);
+			mat[u].push_back(v);
+			mat[v].push_back(u);
 		}
-		
+		for(int i = 1;i <= n;i++)  
+			can[i].reset(); 
+		dfs(1,0);
 		scanf("%d",&m);
-		for(int i=0;i<m;i++)
-			scanf("%d",&ans[i]);
-		solve();
+		for(int i=0;i<m;i++) scanf("%d",&ans[i]);
+		memset(vis,0,sizeof(vis));
+		cur=0;
+		res=0;
+		dfs1(1,0);
+		if(res) printf("YES\n");
+		else printf("NO\n");
 	}
 }
