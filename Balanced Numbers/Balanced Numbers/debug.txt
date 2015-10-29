@@ -1,0 +1,71 @@
+ #include <bits/stdc++.h>
+ #include <iostream>
+ #include <cstdio>
+ #include <cstring>
+ #include <cmath>
+ #include <map>
+ #include <algorithm>
+ #include <vector>
+ #include <iostream>
+ #define pii pair<int,int>
+ #define INF 0x7f3f3f3f
+ #define LL long long
+ #define ULL unsigned long long
+ using namespace std;
+ const double PI  = acos(-1.0);
+ const int N=20;
+ 
+ LL f[N][1<<10][1<<10], bit[N];
+ //[位数][状态][是否出现过]
+ 
+ int isok(int s,int w)
+ {
+     if(!w)   return 0;
+     for(int i=0; i<10; i++) 
+     {
+         if( i%2==0 && (w&(1<<i)) && (s&(1<<i))==0 ) return 0;    //偶数
+         if( i%2!=0 && (w&(1<<i)) && (s&(1<<i))!=0 ) return 0;
+     }
+     return 1;
+ } 
+ LL dfs(int i,int s,int w,int sum,bool e)
+ {
+     if(i==0)            return isok(s,w);
+     if(!e&&~f[i][s][w]) return f[i][s][w];
+
+     LL ans=0;
+     int u= e? bit[i]: 9;
+     for(int d=0; d<=u; d++)
+     {
+         int ww=w, ss=s;
+         if( sum+d!=0 ) ww|=1<<d,ss^=1<<d;
+         ans+=dfs(i-1, ss, ww, sum+d, e&&d==u);
+    }
+     return e? ans: f[i][s][w]=ans;
+ }
+ 
+ LL cal(LL n)
+ {
+     if(n==0)    return 0;
+     int len=0, s=0;
+     while(n)    //拆数
+     {
+         bit[++len]=n%10;
+         n/=10;
+     }
+     return dfs(len,0,0,0,true);
+ }
+ 
+ int main()
+ {
+     //freopen("input.txt","r",stdin);
+     memset(f, -1, sizeof(f));
+     LL L, R;int t;
+     cin>>t;
+     while( t-- )
+     {
+         cin>>L>>R;
+         cout<<cal(R)-cal(L-1)<<endl;
+     }
+     return 0;
+ }
